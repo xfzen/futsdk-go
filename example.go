@@ -16,7 +16,7 @@ var (
 	ctx   context.Context
 )
 
-// 获取个人分组数据。如可以为‘指数’、‘期货’、‘美股’、‘全部’等
+// 获取个人分组数据。如可以为'指数'、'期货'、'美股'、'全部'等
 func GetUserSecurity(group string) {
 	secs, err := opend.GetUserSecurity(ctx, group)
 	if err != nil {
@@ -41,10 +41,10 @@ func GetUserSecurity(group string) {
 // QotMarket_QotMarket_SG_Security   QotMarket = 31 //新加坡市场
 // QotMarket_QotMarket_JP_Security   QotMarket = 41 //日本市场
 
-// 获取深圳市场股票历史数据
-func GetHistData_CNSZ(code string, begin string, end string) {
+// 通用获取历史K线数据函数
+func FetchHistoryKLine(market qotcommon.QotMarket, code string, begin string, end string) {
 	seinfo := &futsdk.Security{
-		Market: qotcommon.QotMarket_QotMarket_CNSH_Security,
+		Market: market,
 		Code:   code,
 	}
 
@@ -62,7 +62,19 @@ func GetHistData_CNSZ(code string, begin string, end string) {
 	jsonstr := utils.PrettyJson(histData.KLines)
 
 	gota.DemoMtDataFilter(jsonstr)
+}
 
-	// df := dataframe.ReadJSON(strings.NewReader(jsonstr))
-	// log.Infof("histData: %v", df)
+// 获取深圳市场股票历史K线数据
+func FetchSZHistoryKLine(code string, begin string, end string) {
+	FetchHistoryKLine(qotcommon.QotMarket_QotMarket_CNSZ_Security, code, begin, end)
+}
+
+// 获取美国市场股票历史K线数据
+func FetchUSHistoryKLine(code string, begin string, end string) {
+	FetchHistoryKLine(qotcommon.QotMarket_QotMarket_US_Security, code, begin, end)
+}
+
+// 获取香港市场股票历史K线数据
+func FetchHKHistoryKLine(code string, begin string, end string) {
+	FetchHistoryKLine(qotcommon.QotMarket_QotMarket_HK_Security, code, begin, end)
 }
