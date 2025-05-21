@@ -2,7 +2,6 @@
 
 # 简介
 * Go语言封装的[富途牛牛OpenAPI](https://openapi.futunn.com/futu-api-doc/)
-* 集成go-zero框架，便于对外提供REST api
 * 集成gota、dataframe、go-talib对数据进行处理与分析
 
 # 使用说明
